@@ -58,7 +58,7 @@ open class JXSegmentedBaseDataSource: JXSegmentedViewDataSource {
         animator = nil
         dataSource.removeAll()
         for index in 0..<preferredItemCount() {
-            let itemModel = preferredItemModelInstance()
+            let itemModel = preferredItemModelInstance(at: index) ?? preferredItemModelInstance()
             preferredRefreshItemModel(itemModel, at: index, selectedIndex: selectedIndex)
             dataSource.append(itemModel)
         }
@@ -66,6 +66,10 @@ open class JXSegmentedBaseDataSource: JXSegmentedViewDataSource {
 
     open func preferredItemCount() -> Int {
         return 0
+    }
+
+    open func preferredItemModelInstance(at index: Int) -> JXSegmentedBaseItemModel? {
+        return nil
     }
 
     /// 子类需要重载该方法，用于返回自己定义的JXSegmentedBaseItemModel子类实例
