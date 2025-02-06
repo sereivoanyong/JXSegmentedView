@@ -54,7 +54,7 @@ open class JXSegmentedTitleOrImageCell: JXSegmentedTitleCell {
             myItemModel.selectedImageInfo != currentImageInfo {
             currentImageInfo = myItemModel.selectedImageInfo
             if myItemModel.loadImageClosure != nil {
-                myItemModel.loadImageClosure!(imageView, myItemModel.selectedImageInfo!)
+                myItemModel.loadImageClosure!(imageView, myItemModel.selectedImageInfo!, myItemModel.selectedImagePlaceholder)
             }else {
                 imageView.image = UIImage(named: myItemModel.selectedImageInfo!)
             }
