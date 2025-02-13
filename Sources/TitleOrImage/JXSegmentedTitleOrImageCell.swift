@@ -122,15 +122,16 @@ open class JXSegmentedTitleOrImageCell: JXSegmentedTitleCell {
             //当前item没有选中图片且是将要选中的时候才做动画
             return super.preferredTitleColorAnimateClosure(itemModel: itemModel)
         }else {
-            let closure: JXSegmentedCellSelectedAnimationClosure = {[weak self] (percent) in
+            let closure: JXSegmentedCellSelectedAnimationClosure = { [weak self] percent in
+                guard let self else { return }
                 if itemModel.isSelected {
                     //将要选中
                     itemModel.titleCurrentColor = itemModel.titleSelectedColor
-                }else {
+                } else {
                     //将要取消选中
                     itemModel.titleCurrentColor = itemModel.titleNormalColor
                 }
-                self?.titleLabel.textColor = itemModel.titleCurrentColor
+                titleLabel.textColor = itemModel.titleCurrentColor ?? tintColor
             }
             //手动调用closure，更新到最新状态
             closure(0)
