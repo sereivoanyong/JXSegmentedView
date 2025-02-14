@@ -87,8 +87,8 @@ open class JXSegmentedTitleImageCell: JXSegmentedTitleCell {
         if normalImageInfo != nil && normalImageInfo != currentImageInfo {
             currentImageInfo = normalImageInfo
             if myItemModel.loadImageClosure != nil {
-                myItemModel.loadImageClosure!(imageView, normalImageInfo!)
-            }else {
+                myItemModel.loadImageClosure!(imageView, normalImageInfo!, myItemModel.imagePlaceholder)
+            } else {
                 imageView.image = UIImage(named: normalImageInfo!)
             }
         }

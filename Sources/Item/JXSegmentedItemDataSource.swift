@@ -148,14 +148,15 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
       itemModel.title = title
       itemModel.textWidth = width(for: title, height: .greatestFiniteMagnitude, font: titleSelectedFont ?? titleNormalFont)
 
-    case .image(let imageSource, _):
+    case .image(let imageSource, let imagePlaceholder):
       let itemModel = itemModel as! JXSegmentedTitleImageItemModel
       itemModel.title = nil
       itemModel.textWidth = 0
       itemModel.normalImageInfo = imageSource?.url?.absoluteString
       itemModel.selectedImageInfo = nil
+      itemModel.imagePlaceholder = imagePlaceholder
       itemModel.titleImageType = .onlyImage
-      itemModel.loadImageClosure = loadImageClosure ?? { imageView, info in imageView.setImage(with: info) }
+      itemModel.loadImageClosure = loadImageClosure ?? { imageView, urlString, placeholder in imageView.setImage(with: urlString, placeholder: placeholder as? any Placeholder) }
       itemModel.imageSize = imageSize
       itemModel.isImageZoomEnabled = isImageZoomEnabled
       itemModel.imageNormalZoomScale = 1
@@ -167,14 +168,15 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
         itemModel.imageCurrentZoomScale = itemModel.imageNormalZoomScale
       }
 
-    case .titleImage(let title, let imageSource, _):
+    case .titleImage(let title, let imageSource, let imagePlaceholder):
       let itemModel = itemModel as! JXSegmentedTitleImageItemModel
       itemModel.title = title
       itemModel.textWidth = width(for: title, height: .greatestFiniteMagnitude, font: titleSelectedFont ?? titleNormalFont)
       itemModel.normalImageInfo = imageSource?.url?.absoluteString
       itemModel.selectedImageInfo = nil
+      itemModel.imagePlaceholder = imagePlaceholder
       itemModel.titleImageType = titleImageType
-      itemModel.loadImageClosure = loadImageClosure ?? { imageView, info in imageView.setImage(with: info) }
+      itemModel.loadImageClosure = loadImageClosure ?? { imageView, urlString, placeholder in imageView.setImage(with: urlString, placeholder: placeholder as? any Placeholder) }
       itemModel.imageSize = imageSize
       itemModel.isImageZoomEnabled = isImageZoomEnabled
       itemModel.imageNormalZoomScale = 1
@@ -392,7 +394,7 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
 
 extension UIImageView {
 
-  func setImage(with urlString: String) {
-    kf.setImage(with: URL(string: urlString).map { .network($0) })
+  func setImage(with urlString: String, placeholder: (any Placeholder)? = nil) {
+    kf.setImage(with: URL(string: urlString).map { .network($0) }, placeholder: placeholder)
   }
 }

@@ -12,8 +12,9 @@ open class JXSegmentedTitleImageItemModel: JXSegmentedTitleItemModel {
     open var titleImageType: JXSegmentedTitleImageType = .rightImage
     open var normalImageInfo: String?
     open var selectedImageInfo: String?
+    open var imagePlaceholder: Any?
     open var loadImageClosure: LoadImageClosure?
-    open var imageSize: CGSize = CGSize.zero
+    open var imageSize: CGSize = .zero
     open var titleImageSpacing: CGFloat = 0
     open var isImageZoomEnabled: Bool = false
     open var imageNormalZoomScale: CGFloat = 0
