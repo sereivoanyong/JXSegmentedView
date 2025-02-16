@@ -15,7 +15,7 @@ open class JXSegmentedNumberDataSource: JXSegmentedTitleDataSource {
     /// numberLabel的宽度补偿，numberLabel真实的宽度是文字内容的宽度加上补偿的宽度
     open var numberWidthIncrement: CGFloat = 10
     /// numberLabel的背景色
-    open var numberBackgroundColor: UIColor = .red
+    open var numberBackgroundColor: UIColor = .systemRed
     /// numberLabel的textColor
     open var numberTextColor: UIColor = .white
     /// numberLabel的font

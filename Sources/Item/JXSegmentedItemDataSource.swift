@@ -20,9 +20,9 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
   /// label的numberOfLines
   open var titleNumberOfLines: Int = 1
   /// title普通状态的textColor
-  open var titleNormalColor: UIColor = .black
+  open var titleNormalColor: UIColor = .label
   /// title选中状态的textColor
-  open var titleSelectedColor: UIColor = .red
+  open var titleSelectedColor: UIColor?
   /// title普通状态时的字体
   open var titleNormalFont: UIFont = .systemFont(ofSize: 15)
   /// title选中时的字体。如果不赋值，就默认与titleNormalFont一样
@@ -59,7 +59,7 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
   /// numberLabel的宽度补偿，numberLabel真实的宽度是文字内容的宽度加上补偿的宽度
   open var numberWidthIncrement: CGFloat = 10
   /// numberLabel的背景色
-  open var numberBackgroundColor: UIColor = .red
+  open var numberBackgroundColor: UIColor = .systemRed
   /// numberLabel的textColor
   open var numberTextColor: UIColor = .white
   /// numberLabel的font
@@ -78,7 +78,7 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
   /// 红点的圆角值，JXSegmentedViewAutomaticDimension等于dotSize.height/2
   open var dotCornerRadius: CGFloat = JXSegmentedViewAutomaticDimension
   /// 红点的颜色
-  open var dotColor = UIColor.red
+  open var dotColor: UIColor = .systemRed
   /// dotView的默认位置是center在titleLabel的右上角，可以通过dotOffset控制X、Y轴的偏移
   open var dotOffset: CGPoint = CGPoint.zero
 
@@ -233,11 +233,7 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
       itemModel.titleNormalColor = innerTitleNormalColor(at: index)
       itemModel.titleSelectedColor = innerTitleSelectedColor(at: index)
       itemModel.titleNormalFont = innerTitleNormalFont(at: index)
-      if let selectedFont = innerTitleSelectedFont(at: index) {
-        itemModel.titleSelectedFont = selectedFont
-      } else {
-        itemModel.titleSelectedFont = innerTitleNormalFont(at: index)
-      }
+      itemModel.titleSelectedFont = innerTitleSelectedFont(at: index)
       itemModel.isTitleZoomEnabled = isTitleZoomEnabled
       itemModel.isTitleStrokeWidthEnabled = isTitleStrokeWidthEnabled
       itemModel.isTitleMaskEnabled = isTitleMaskEnabled
@@ -324,8 +320,8 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
       }
 
       if isTitleColorGradientEnabled && isItemTransitionEnabled {
-        leftItemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: leftItemModel.titleSelectedColor, to: leftItemModel.titleNormalColor, percent: percent)
-        rightItemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from:rightItemModel.titleNormalColor , to:rightItemModel.titleSelectedColor, percent: percent)
+        leftItemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: leftItemModel.titleSelectedColor ?? segmentedView.tintColor, to: leftItemModel.titleNormalColor, percent: percent)
+        rightItemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: rightItemModel.titleNormalColor, to: rightItemModel.titleSelectedColor ?? segmentedView.tintColor, percent: percent)
       }
     }
 
@@ -373,7 +369,7 @@ open class JXSegmentedItemDataSource: JXSegmentedBaseDataSource {
       return titleNormalColor
     }
   }
-  private func innerTitleSelectedColor(at index: Int) -> UIColor {
+  private func innerTitleSelectedColor(at index: Int) -> UIColor? {
     if let configuration {
       return configuration.titleSelectedColor(at: index)
     } else {
