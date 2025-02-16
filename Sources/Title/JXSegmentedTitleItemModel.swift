@@ -11,11 +11,11 @@ import UIKit
 open class JXSegmentedTitleItemModel: JXSegmentedBaseItemModel {
     open var title: String?
     open var titleNumberOfLines: Int = 0
-    open var titleNormalColor: UIColor = .black
-    open var titleCurrentColor: UIColor = .black
-    open var titleSelectedColor: UIColor = .red
+    open var titleNormalColor: UIColor = .label
+    open var titleCurrentColor: UIColor?
+    open var titleSelectedColor: UIColor?
     open var titleNormalFont: UIFont = UIFont.systemFont(ofSize: 15)
-    open var titleSelectedFont: UIFont = UIFont.systemFont(ofSize: 15)
+    open var titleSelectedFont: UIFont?
     open var isTitleZoomEnabled: Bool = false
     open var titleNormalZoomScale: CGFloat = 0
     open var titleCurrentZoomScale: CGFloat = 0

@@ -18,9 +18,9 @@ open class JXSegmentedTitleDataSource: JXSegmentedBaseDataSource {
     /// label的numberOfLines
     open var titleNumberOfLines: Int = 1
     /// title普通状态的textColor
-    open var titleNormalColor: UIColor = .black
+    open var titleNormalColor: UIColor = .label
     /// title选中状态的textColor
-    open var titleSelectedColor: UIColor = .red
+    open var titleSelectedColor: UIColor?
     /// title普通状态时的字体
     open var titleNormalFont: UIFont = UIFont.systemFont(ofSize: 15)
     /// title选中时的字体。如果不赋值，就默认与titleNormalFont一样
@@ -60,11 +60,7 @@ open class JXSegmentedTitleDataSource: JXSegmentedBaseDataSource {
         myItemModel.titleNormalColor = innerTitleNormalColor(at: index)
         myItemModel.titleSelectedColor = innerTitleSelectedColor(at: index)
         myItemModel.titleNormalFont = innerTitleNormalFont(at: index)
-        if let selectedFont = innerTitleSelectedFont(at: index) {
-            myItemModel.titleSelectedFont = selectedFont
-        } else {
-            myItemModel.titleSelectedFont = innerTitleNormalFont(at: index)
-        }
+        myItemModel.titleSelectedFont = innerTitleSelectedFont(at: index)
         myItemModel.isTitleZoomEnabled = isTitleZoomEnabled
         myItemModel.isTitleStrokeWidthEnabled = isTitleStrokeWidthEnabled
         myItemModel.isTitleMaskEnabled = isTitleMaskEnabled
@@ -140,8 +136,8 @@ open class JXSegmentedTitleDataSource: JXSegmentedBaseDataSource {
         }
 
         if isTitleColorGradientEnabled && isItemTransitionEnabled {
-            leftModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: leftModel.titleSelectedColor, to: leftModel.titleNormalColor, percent: percent)
-            rightModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from:rightModel.titleNormalColor , to:rightModel.titleSelectedColor, percent: percent)
+            leftModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: leftModel.titleSelectedColor ?? segmentedView.tintColor, to: leftModel.titleNormalColor, percent: percent)
+            rightModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: rightModel.titleNormalColor, to: rightModel.titleSelectedColor ?? segmentedView.tintColor, percent: percent)
         }
     }
 
@@ -178,7 +174,7 @@ open class JXSegmentedTitleDataSource: JXSegmentedBaseDataSource {
             return titleNormalColor
         }
     }
-    private func innerTitleSelectedColor(at index: Int) -> UIColor {
+    private func innerTitleSelectedColor(at index: Int) -> UIColor? {
         if let configuration {
             return configuration.titleSelectedColor(at: index)
         } else {

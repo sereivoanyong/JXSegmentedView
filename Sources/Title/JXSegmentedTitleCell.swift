@@ -71,8 +71,8 @@ open class JXSegmentedTitleCell: JXSegmentedBaseCell {
             }
         }else {
             if myItemModel.isSelected {
-                titleLabel.font = myItemModel.titleSelectedFont
-                maskTitleLabel.font = myItemModel.titleSelectedFont
+                titleLabel.font = myItemModel.titleSelectedFont ?? myItemModel.titleNormalFont
+                maskTitleLabel.font = myItemModel.titleSelectedFont ?? myItemModel.titleNormalFont
             }else {
                 titleLabel.font = myItemModel.titleNormalFont
                 maskTitleLabel.font = myItemModel.titleNormalFont
@@ -147,7 +147,7 @@ open class JXSegmentedTitleCell: JXSegmentedBaseCell {
                 let titleColorClosure = preferredTitleColorAnimateClosure(itemModel: myItemModel)
                 appendSelectedAnimationClosure(closure: titleColorClosure)
             }else {
-                titleLabel.textColor = myItemModel.titleCurrentColor
+                titleLabel.textColor = myItemModel.titleCurrentColor ?? tintColor
             }
         }
 
@@ -187,23 +187,25 @@ open class JXSegmentedTitleCell: JXSegmentedBaseCell {
     }
 
     open func preferredTitleColorAnimateClosure(itemModel: JXSegmentedTitleItemModel) -> JXSegmentedCellSelectedAnimationClosure {
-        return {[weak self] (percent) in
+        return { [weak self] percent in
+            guard let self else { return }
             if itemModel.isSelected {
                 //将要选中，textColor从titleNormalColor到titleSelectedColor插值渐变
-                itemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: itemModel.titleNormalColor, to: itemModel.titleSelectedColor, percent: percent)
+                itemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: itemModel.titleNormalColor, to: itemModel.titleSelectedColor ?? tintColor, percent: percent)
             }else {
                 //将要取消选中，textColor从titleSelectedColor到titleNormalColor插值渐变
-                itemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: itemModel.titleSelectedColor, to: itemModel.titleNormalColor, percent: percent)
+                itemModel.titleCurrentColor = JXSegmentedViewTool.interpolateThemeColor(from: itemModel.titleSelectedColor ?? tintColor, to: itemModel.titleNormalColor, percent: percent)
             }
-            self?.titleLabel.textColor = itemModel.titleCurrentColor
+            titleLabel.textColor = itemModel.titleCurrentColor ?? tintColor
         }
     }
     
     override func setSelectedStyle(isSelected: Bool) {
+        guard let itemModel = itemModel as? JXSegmentedTitleItemModel else { return }
         if isSelected {
-            self.titleLabel.textColor = (self.itemModel as? JXSegmentedTitleItemModel)?.titleSelectedColor
+            titleLabel.textColor = itemModel.titleSelectedColor ?? tintColor
         } else {
-            self.titleLabel.textColor = (self.itemModel as? JXSegmentedTitleItemModel)?.titleNormalColor
+            titleLabel.textColor = itemModel.titleNormalColor
         }
     }
 }
