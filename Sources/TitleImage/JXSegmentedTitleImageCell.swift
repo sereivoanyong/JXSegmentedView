@@ -9,6 +9,7 @@
 import UIKit
 
 open class JXSegmentedTitleImageCell: JXSegmentedTitleCell {
+    private var titleTextColorObservation: NSKeyValueObservation?
     public let imageView = UIImageView()
     private var currentImageInfo: String?
 
@@ -23,6 +24,9 @@ open class JXSegmentedTitleImageCell: JXSegmentedTitleCell {
 
         imageView.contentMode = .scaleAspectFit
         contentView.insertSubview(imageView, belowSubview: titleLabel)
+        titleTextColorObservation = titleLabel.observe(\.textColor, options: [.initial, .new]) { [unowned self] titleLabel, _ in
+            imageView.tintColor = titleLabel.textColor ?? tintColor 
+        }
     }
 
     open override func layoutSubviews() {
